@@ -31,6 +31,7 @@ export class ServerElementComponent implements
   AfterViewInit,
   AfterViewChecked,
   OnDestroy {
+
   @Input('srvElement') element: {type: string, name: string, content: string};
   @Input() name: string;
   @ViewChild('heading') header: ElementRef;
@@ -40,6 +41,11 @@ export class ServerElementComponent implements
     console.log('constructor called!');
   }
 
+
+  /**
+   * Life hooks starting after constructor
+   * See the screenshot for order
+   */
   ngOnChanges(changes: SimpleChanges) {
     console.log('ngOnChanges called!');
     console.log(changes);

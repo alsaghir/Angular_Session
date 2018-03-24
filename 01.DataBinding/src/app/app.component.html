@@ -16,17 +16,13 @@
     <div class="col-xs-12">
 
       <!--
-
         Directives:
-
         - Components are directives + template
         - Directives are either structural or attribute directives
-        -  
-
-
-
-
-
+          - Structural directives changes the DOM by adding/removing/changing
+          elements
+          - Attribute directives changes appearance or behaviour
+          of element, compnent or other directive
       -->
       <div class="panel panel-default" *ngFor="let element of serverElements">
         <div class="panel-heading">{{ element.name }}</div>
