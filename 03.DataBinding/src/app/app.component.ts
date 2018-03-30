@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ContentChild, ElementRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -7,8 +7,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   serverElements = [{type: 'server', name: 'Testserver', content: 'Just a test!'}];
-  
+
+  @ViewChild('contentParagraph') paragraph: ElementRef;
+
   onServerAdded(serverData: {serverName: string, serverContent: string}) {
+    console.log(this.paragraph.nativeElement.innerText);
     this.serverElements.push({
       type: 'server',
       name: serverData.serverName,

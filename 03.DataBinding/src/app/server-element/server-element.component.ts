@@ -73,6 +73,7 @@ export class ServerElementComponent implements
   ngAfterViewInit() {
     console.log('ngAfterViewInit called!');
     console.log('Text Content: ' + this.header.nativeElement.textContent);
+    this.header.nativeElement.textContent = 'testing editing the element';
   }
 
   ngAfterViewChecked() {

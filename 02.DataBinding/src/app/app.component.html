@@ -38,6 +38,15 @@
         <div class="panel-body">
             <app-alert-and-log theName="Apollo"></app-alert-and-log>
             <app-alert-and-log [theName]="newServerName"></app-alert-and-log>
+            <app-alert-and-log bind-theName="newServerName"></app-alert-and-log>
+
+            <!--
+              Property binding applied on component
+              using 3 different syntaxes. Note that
+              the first one is static since it's NOT property binding
+              but it's normal property setting for HTML DOM element
+            -->
+
         </div>
       </div>
     </div>
