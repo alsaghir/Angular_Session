@@ -20,9 +20,9 @@ export class ServerComponent implements OnInit {
   ngOnInit() {
     console.log(this.route.snapshot.data);
     this.route.data.subscribe( (data: Data) => {
-                                    this.server = data['server']; // same name on the route path configuration we gave
-                                    console.log(data['server']);
-                                    console.log(data['testMessage']);
+                                    this.server = data['server']; // same name on the route path configuration we gave to the resolver
+                                    console.log(data['server']); // Dynamic using resolver
+                                    console.log(data['testMessage']);  // Static using data property of route object in routing module
 
                                   }
       );

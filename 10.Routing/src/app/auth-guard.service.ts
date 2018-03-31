@@ -25,12 +25,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     return this.authService.isAuthenticated() // canActivate returns Promise in this case hence, isAuthenticated() does too
       .then( // then() here will run with whatever data resloved from the Promise returned by isAuthenticated()
         (authenticated: boolean) => {
-          if (authenticated) {
-            return true;
-          } else {
-            this.router.navigate(['/']);
-            return false;
-          }
+          if (authenticated) { return true; } else { this.router.navigate(['/']); return false; }
         }
       );
   }

@@ -35,7 +35,7 @@ export class EditServerComponent implements OnInit, CanComponentDeactivate {
 
     /**
      * Also query parameters could be subscribed to get real time updates when navigating
-     * to same component on same route that we are already in
+     * to same component on same route that we are already in but with different query parameters
      */
 
     this.route.queryParams
