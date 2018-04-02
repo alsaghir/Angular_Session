@@ -13,6 +13,12 @@ export class UserComponent implements OnInit {
   constructor(private route: ActivatedRoute, private usersService: UsersService) { }
 
   ngOnInit() {
+
+    /** 1
+     * Here we are subscribing (observing) an angular observable
+     * called params which update subjects/subscribers/observers
+     * whenever changes
+     */
     this.route.params
       .subscribe(
         (params: Params) => {
@@ -21,6 +27,10 @@ export class UserComponent implements OnInit {
       );
   }
 
+  /** 6
+   * Subject is consumer and producer of data in the same time
+   * here Subject acts as observer inside observable
+   */
   onActivate() {
     this.usersService.userActivated.next(this.id);
   }

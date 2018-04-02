@@ -21,17 +21,25 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    /** 1
+    /** 2
      * Examples of interval observable that emits seqential
      * numbers each period of milliseconds
+     *
+     * Remember
+     * - Observable is a data producer
+     * - This observable will NOT fail or complete
+     * - (LEAVE FOR LAST) map is an operator to change data and return it
+     *   after the change. Also check example on map near the end of this class
      */
 
-    const myNumbers = Observable.interval(1000)
+    /*const myNumbers = Observable.interval(1000)
       .map(
         (data: number) => {
           return data * 2;
         }
-      );
+      );*/
+
+      const myNumbers = Observable.interval(1000);
 
     this.numbersObsSubscription = myNumbers.subscribe(
       (number: number) => {
@@ -41,14 +49,16 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
 
-    /** 2
+    /** 3
      * Here we are building the observer using create method
      * This observer will be our observable that will do the async
      * operation we need
+     *
+     * Data sent should be the generic type as in Observer<string>
      */
 
 
-    const myObservable = Observable.create((observer: Observer<string>) => {
+    const myObservable: Observable<string> = Observable.create((observer: Observer<string>) => {
       setTimeout(() => { // emmiting string after period of time
         observer.next('first package');  // next is like emit in EventEmitter
       }, 2000);
@@ -68,9 +78,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
 
 
-    /** 3
+    /** 4
      * subscribing to the observable to do custom
      * methods on emitting data, completing or failing
+     *
+     * Data type here is known to use since we are the implementers
+     * Normally, this is provided by documentation as in
+     * angular observables
      *
      */
     this.customObsSubscription = myObservable.subscribe(
@@ -79,13 +93,40 @@ export class HomeComponent implements OnInit, OnDestroy {
       () => { console.log('completed'); }
     );
 
+    /*this.customObsSubscription = myObservable.map(data => data + 'x').subscribe(
+      (data: string) => { console.log(data); },
+      (error: string) => { console.log(error); },
+      () => { console.log('completed'); }
+    );*/
+
+
+
+    const exampeObservable: Observable<string> = Observable.create(this.methodToExecute);
+    exampeObservable.subscribe(this.dataOnRecieve);
 
   }
 
-  /** 4
+  public methodToExecute(observer: Observer<string>) {
+
+    setTimeout( () => observer.next('500 ms passed'), 500);
+  }
+
+  public dataOnRecieve(data: string) {
+    console.log(data);
+  }
+
+
+
+
+  /** 5
    * You're responsible of destroying
    * observables subscribtion to stop listenning
    * when destroying components
+   *
+   * TRY WITHOUT UNSUBSCRIBING
+   *
+   * Angular take care of destroying its all observables but good practice
+   * to do it on your own
    */
 
   ngOnDestroy() {
@@ -97,14 +138,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
 
-
-
-
-
-
 /** Another way to create observable and subscribe to it
 
- 
+
 
 
   const anotherObservable = new Observable<string>(
@@ -116,8 +152,5 @@ export class HomeComponent implements OnInit, OnDestroy {
 
  */
 
-
-
-  
 
 }
