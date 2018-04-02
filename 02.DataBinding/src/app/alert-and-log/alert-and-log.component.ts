@@ -22,6 +22,7 @@ export class AlertAndLogComponent implements OnInit, OnDestroy {
    *  - Listenning here is done using subscribe() method which MUST be called before emitting an event of course
    *  - Don't use anything but emit method on EventEmitter. Use Subject for similar actions, see the following
    *    https://github.com/angular/angular/blob/master/packages/core/src/event_emitter.ts
+   *  - You can't to inside the same component. You emit only to external components. Example the commented lines below to that task.
    *
    *  ALWAYS unsubscribe for memory efficiency
    */
@@ -30,16 +31,16 @@ export class AlertAndLogComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   constructor() { this.subscription = this.nameClick.subscribe(() => {console.log('event fired'); } );
-                  // this.subscription = this.nameClickSubject.subscribe((variable) => {console.log('event fired ' + variable); } );
+                   // this.subscription = this.nameClickSubject.subscribe((variable) => {console.log('event fired ' + variable); } );
                 }
 
   ngOnInit() {
 
   }
 
-  onClick() {
+  onClick() { // Click on <p> tag to fire the event
     this.nameClick.emit();
-    // this.nameClickSubject.next('x');
+     // this.nameClickSubject.next('x');
   }
 
   ngOnDestroy() {

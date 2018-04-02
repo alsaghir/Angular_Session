@@ -1,0 +1,149 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+
+      <!-- 1
+        form tag is detected by Angular on run time as if it was a selector for angular directive
+        ngSubmit event fires when submitting the forum
+        We must add
+          - Template reference variable on the form tag to reference the form element
+          - To reference the form in more proper way we expose ngForm directive instance to the template reference
+
+          List of built-in validators
+          https://angular.io/api/forms/Validators
+
+          The NgForm directive
+          What NgForm directive? You didn't add an NgForm directive.
+          Angular did. Angular automatically creates and attaches an NgForm directive to the <form> tag.
+            The NgForm directive supplements the form element with additional features. It holds the controls you created for the elements with an ngModel directive
+            and name attribute, and monitors their properties, including their validity. It also has its own valid property which is true
+            only if every contained control is valid.
+      -->
+      
+      <!-- 2
+        Old way, to pass the reference in the method
+        <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+        -->
+          <form (ngSubmit)="onSubmit()" #f="ngForm">
+
+
+
+            <!--
+              grouping child inputs in single key named userData using ngModelGroup="userData"
+              we can use the directive of that group using #userData="ngModelGroup"
+            -->
+        <div id="user-data" ngModelGroup="userData" #userData="ngModelGroup">
+
+
+
+
+
+          <div class="form-group">
+            <label for="username">Username</label>
+
+            <!--
+              Use ngModel directive to attach any input, select..etc tags to the form
+              Also HTML5 validators are detected and handled by angular
+              Angular sets its own classes to change appearence based on validation see the CSS style
+            -->
+            <input type="text" id="username" class="form-control" ngModel name="username" required #toSeeStyle>
+            <br>TODO: remove this: {{ toSeeStyle.className }}
+
+
+          
+          
+          </div>
+          <button class="btn btn-default" type="button" (click)="suggestUserName()">Suggest an Username</button>
+          <div class="form-group">
+            <label for="email">Mail</label>
+
+
+            <!--
+              Track control state and validity with ngModel
+              Using ngModel in a form gives you more than just two-way data binding.
+              It also tells you if the user touched the control, if the value changed, or if the value became invalid.
+              
+              The NgModel directive doesn't just track state; it updates the control with special Angular CSS classes that reflect the state.
+              You can leverage those class names to change the appearance of the control.
+
+              You need a template reference variable to access the input box's Angular control from within the template.
+              Here you created a variable called name and gave it the value "ngModel".
+
+              Why "ngModel"? A directive's exportAs property tells Angular how to link the reference variable to the directive.
+              You set name to ngModel because the ngModel directive's exportAs property happens to be "ngModel".
+            -->
+
+            <input type="email" id="email" class="form-control" ngModel name="email" required email #email="ngModel">
+            <span class="help-block" *ngIf="!email.valid && email.touched">Please enter a valid email!</span>
+
+          </div>
+        </div>
+
+        <!-- Valid flag for ngModelGroup -->
+        <p *ngIf="!userData.valid && userData.touched">User Data is invalid!</p>
+
+
+
+        
+        <div class="form-group">
+          <label for="secret">Secret Questions</label>
+
+
+          <!--
+            ngModel must be used to attach elements in the form to the ngForm. ngModel & ngForm work together.
+            However, using ngModel selector is not strict. We can use
+            [(ngModel)]
+            [ngModel]
+            ngModel
+
+            Here we use property binding to set default value on startup
+          -->
+          <select id="secret" class="form-control" [ngModel]="defaultQuestion" name="secret">
+
+
+
+            <option value="pet">Your first Pet?</option>
+            <option value="teacher">Your first teacher?</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <textarea name="questionAnswer" rows="3" class="form-control" [(ngModel)]="answer"></textarea>
+        </div>
+        <p>Your reply: {{ answer }}</p>
+        <div class="radio" *ngFor="let gender of genders">
+          <label>
+            <input type="radio" name="gender" ngModel [value]="gender" required> {{ gender }}
+          </label>
+        </div>
+
+
+        <!-- 
+          Simulating FormArray on Reactive approach
+         
+         <div ngModelGroup="hobbies" #hobbies="ngModelGroup">
+            <h4>Your Hobbies</h4>
+            <button class="btn btn-default" type="button" (click)="onAddHobby()">Add Hobby</button>
+            <div class="form-group" *ngFor="let hobby of indexArray; let i = index">
+              <input type="text" [name]="'hobby-' + i" class="form-control" ngModel>
+            </div>
+          </div>
+        -->
+
+
+        <button class="btn btn-primary" type="submit" [disabled]="!f.valid">Submit</button>
+
+      </form>
+    </div>
+  </div>
+  <hr>
+  <div class="row" *ngIf="submitted">
+    <div class="col-xs-12">
+      <h3>Your Data</h3>
+      <p>Username: {{ user.username }}</p>
+      <p>Mail: {{ user.email }}</p>
+      <p>Secret Question: Your first {{ user.secretQuestion }}</p>
+      <p>Answer: {{ user.answer }}</p>
+      <p>Gender: {{ user.gender }}</p>
+    </div>
+  </div>
+</div>
