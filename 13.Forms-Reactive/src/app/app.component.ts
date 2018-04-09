@@ -78,7 +78,7 @@ export class AppComponent implements OnInit {
   /**
    * Adding a hobby input element (control) is simply
    * creating new FormControl and pushing it in the FormArray
-   * to push the element/control you will need to cast returned abstractControl from get method
+   * to push the element/control you will need to cast returned AbstractControl from get method
    * to FormArray
    */
   onAddHobby() {

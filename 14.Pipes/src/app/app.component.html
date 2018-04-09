@@ -17,6 +17,7 @@
             {{ server.status }}
           </span>
           <strong>{{ server.name | shorten:15 }}</strong> |
+          <!-- Upper case pipe -->
           {{ server.instanceType | uppercase }} |
           {{ server.started | date:'fullDate' | uppercase }}
         </li>
