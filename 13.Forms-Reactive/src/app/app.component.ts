@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators, FormBuilder, AbstractControl, ValidatorFn} from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -8,6 +8,8 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+
+
   genders = ['male', 'female'];
 
 
@@ -16,6 +18,36 @@ export class AppComponent implements OnInit {
 
 
   forbiddenUsernames = ['Chris', 'Anna'];
+
+
+/*
+  // Another way to use FormBuilder service and create the form
+
+  constructor(private fb: FormBuilder) { // <--- inject FormBuilder
+    this.signupForm = this.fb.group({
+      userData: this.fb.group({
+
+          // reference to normal function
+          // so the caller has 'this' reference changed. Using bind() we fix this
+          // problem to manipulate the 'this' reference on time of calling forbiddenNames
+
+        username: this.fb.control(null, [Validators.required, this.forbiddenNames.bind(this)]),
+
+
+
+        //  This solved this problem
+        //  as it returns an anonymouse function
+
+        // username: this.fb.control(null, [Validators.required, this.forbiddenNameValidator()]),
+
+
+        email: this.fb.control(null, [Validators.required, Validators.email], this.forbiddenEmails)
+      }),
+      gender: this.fb.control('male'),
+      hobbies: this.fb.array([])
+    });
+  }
+ */
 
   constructor() {}
 
@@ -26,7 +58,7 @@ export class AppComponent implements OnInit {
     // initiating the form and creating controls (input elements)
     this.signupForm = new FormGroup({
       'userData': new FormGroup({ // passing reference to validators methods, these are methods without paranthese
-        'username': new FormControl(null, [Validators.required, this.forbiddenNames.bind(this)]), // one validator or array of validators
+        'username': new FormControl(null, [Validators.required, this.forbiddenNames.bind(this)]), // one or array of validators SEE ABOVE
         'email': new FormControl(null, [Validators.required, Validators.email], this.forbiddenEmails) // no binding this as we didn't use it
       }),
       'gender': new FormControl('male'),
@@ -109,6 +141,18 @@ export class AppComponent implements OnInit {
     }
     return null;
   }
+
+
+  // return anonymouse function solves any this reference problem
+  forbiddenNameValidator(): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} => {
+      if (this.forbiddenUsernames.indexOf(control.value) !== -1) {
+        return {'nameIsForbidden': true};
+      }
+      return null;
+    };
+  }
+
 
   /**
    * a sync validator. Promise object or Observable should be returned.

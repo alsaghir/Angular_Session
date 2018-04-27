@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core'; 
+import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnChanges, OnInit {
 
   appStatus = new Promise<string>((resolve, reject) => {
     setTimeout(() => {
@@ -40,7 +40,17 @@ export class AppComponent {
       started: new Date(15, 1, 2017)
     }
   ];
+
   filteredStatus: string;
+
+  ngOnInit() {
+    console.log('Initiated');
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('changed');
+    console.log(changes);
+  }
 
   getStatusClasses(server: {instanceType: string, name: string, status: string, started: Date}) {
     return {

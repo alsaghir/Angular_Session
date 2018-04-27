@@ -2,7 +2,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'filter',
-  pure: false  // Detecting change will based on objects value instead of onChange detection. Performance issue !!
+  pure: false  // Detecting change will based on objects value instead of onChange detection. Performance issue !! Use component for That.
+  // Read this https://angular.io/guide/pipes#pure-and-impure-pipes
+  // USE the filter then try to add a server and see what happens !!
 })
 export class FilterPipe implements PipeTransform {
 
@@ -13,7 +15,8 @@ export class FilterPipe implements PipeTransform {
    * @param filterString  additional
    * @param propName additional
    */
-  transform(value: any, filterString: string, propName: string): any {
+  transform(value: {instanceType: string, name: string, status: string, started: Date }[], filterString: string, propName: string): any {
+
     if (value.length === 0 || !filterString) {
       return value;
     }
